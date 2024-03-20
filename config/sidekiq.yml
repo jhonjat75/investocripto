@@ -1,0 +1,4 @@
+:schedule:
+  update_coin_prices:
+    cron: '*/1 * * * *'
+    class: UpdateCoinPricesJob

@@ -3,6 +3,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.8'
 
+gem 'dotenv-rails', require: 'dotenv/rails-now'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 # Use Puma as the app server
@@ -16,6 +18,10 @@ gem 'puma', '~> 4.1'
 gem 'mongoid', '~> 7.0'
 #gem 'factory_bot_rails'
 gem 'faker'
+gem 'httparty'
+
+gem 'sidekiq'
+gem 'sidekiq-scheduler'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
