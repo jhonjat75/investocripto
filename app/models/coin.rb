@@ -7,4 +7,9 @@ class Coin
   field :rate, type: Float
   field :logo_url, type: String
   field :price, type: Float
+
+  validates :name, presence: true
+  validates :rate, presence: true
+  validates :logo_url, presence: true
+  validates :price, presence: true
 end

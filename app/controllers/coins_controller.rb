@@ -2,7 +2,6 @@ require 'coin_api_service'
 
 class CoinsController < ApplicationController
   include ActionController::MimeResponds
-  before_action :set_coin, only: [:show, :update, :destroy]
 
   # GET /coins
   def index
@@ -29,47 +28,7 @@ class CoinsController < ApplicationController
     end
   end
 
-  # GET /coins/1
-  def show
-    render json: @coin
-  end
-
-  # POST /coins
-  def create
-    @coin = Coin.new(coin_params)
-
-    if @coin.save
-      render json: @coin, status: :created, location: @coin
-    else
-      render json: @coin.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /coins/1
-  def update
-    if @coin.update(coin_params)
-      render json: @coin
-    else
-      render json: @coin.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /coins/1
-  def destroy
-    @coin.destroy
-  end
-
   private
-  # Use callbacks to share common setup or constraints between actions.
-  def set_coin
-    @coin = Coin.find(params[:id])
-  end
-
-  # Only allow a trusted parameter "white list" through.
-  def coin_params
-    params.require(:coin).permit(:name, :rate, :logo_url, :price)
-  end
-
 
   def coins_to_csv(coins)
     CSV.generate(headers: true) do |csv|
