@@ -18,7 +18,7 @@ coins_data = [
         symbol: 'ADA',
         name: 'Cardano',
         rate: 1,
-        logo_url: 'https://cdn-icons-png.flaticon.com/icon/premium/png-256-thumb/cardano-4441326-3679756.png',
+        logo_url: 'https://cdn4.iconfinder.com/data/icons/crypto-currency-and-coin-2/256/cardano_ada-512.png',
         price: 0.63
     }
 ]

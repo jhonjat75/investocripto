@@ -1,28 +1,32 @@
 require 'coin_api_service'
 
 class CoinsController < ApplicationController
+  include ActionController::MimeResponds
   before_action :set_coin, only: [:show, :update, :destroy]
 
   # GET /coins
   def index
     coins = Coin.all
-
-    # render json: @coins
-    # coin_api_service = CoinApiService.new('9979E106-3146-4B03-AA09-EC3ED6ADE4B5')
-
-    # # Obtén los precios para cada moneda
-    # bitcoin_data = coin_api_service.get_price('BTC')
-    # ether_data = coin_api_service.get_price('ETH')
-    # cardano_data = coin_api_service.get_price('ADA')
-
-    # # Formatea la respuesta
-    # coins = [
-    #   format_coin_data('Bitcoin', bitcoin_data),
-    #   format_coin_data('Ether', ether_data),
-    #   format_coin_data('Cardano', cardano_data)
-    # ]
-
     render json: coins
+  end
+
+  # GET /coins/download
+  def download
+    coins = Coin.all
+    respond_to do |format|
+      format.json { send_data coins.to_json, filename: "coins-#{Date.today}.json", type: 'application/json' }
+      format.csv { send_data coins_to_csv(coins), filename: "coins-#{Date.today}.csv" }
+      format.pdf do
+        pdf_html = ActionController::Base.new.render_to_string(
+                    template: 'coins/download.html.erb',
+                    layout: 'pdf',
+                    locals: { coins: coins }
+                  )
+
+        pdf = WickedPdf.new.pdf_from_string(pdf_html)
+        send_data pdf, filename: "coinsdata.pdf", type: 'application/pdf', disposition: 'attachment'
+      end
+    end
   end
 
   # GET /coins/1
@@ -56,13 +60,23 @@ class CoinsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_coin
-      @coin = Coin.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_coin
+    @coin = Coin.find(params[:id])
+  end
 
-    # Only allow a trusted parameter "white list" through.
-    def coin_params
-      params.require(:coin).permit(:name, :rate, :logo_url, :price)
+  # Only allow a trusted parameter "white list" through.
+  def coin_params
+    params.require(:coin).permit(:name, :rate, :logo_url, :price)
+  end
+
+
+  def coins_to_csv(coins)
+    CSV.generate(headers: true) do |csv|
+      csv << ['ID', 'Name', 'Price', 'Rate', 'Updated At'] # Cambiar según los atributos de Coin
+      coins.each do |coin|
+        csv << [coin.name, coin.price, coin.rate, coin.updated_at]
+      end
     end
+  end
 end

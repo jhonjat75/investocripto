@@ -9,6 +9,7 @@ gem 'dotenv-rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
+gem 'rack-cors', require: 'rack/cors'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
@@ -23,6 +24,9 @@ gem 'httparty'
 gem 'sidekiq'
 #gem 'sidekiq-scheduler'
 gem 'sidekiq-cron'
+
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
