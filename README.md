@@ -23,6 +23,7 @@ The InvestoCrypto is a specialized web application designed for investors intere
 - Rails 6+
 - MongoDB
 - Node.js
+- Redis
 
 ### Installation
 
@@ -39,10 +40,7 @@ To get started with the application, follow these steps:
     bundle install
     ```
 
-3. Install JavaScript dependencies:
-    ```bash
-    yarn install
-    ```
+3. Create file .env.development and get environment variables.
 
 4. Ensure MongoDB is running on your system.
 
@@ -56,7 +54,12 @@ To get started with the application, follow these steps:
     rails server
     ```
 
-7. Visit `http://localhost:3000` in your browser to use the application.
+6. Start the Sidekiq server:
+    ```bash
+    bundle exec sidekiq -C config/schedule.yml
+    ```
+
+8. Visit `http://localhost:3000` in your browser to use the application.
 
 ## Usage
 

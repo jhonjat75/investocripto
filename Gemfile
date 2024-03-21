@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.8'
 
-gem 'dotenv-rails', require: 'dotenv/rails-now'
+gem 'dotenv-rails'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
@@ -21,7 +21,8 @@ gem 'faker'
 gem 'httparty'
 
 gem 'sidekiq'
-gem 'sidekiq-scheduler'
+#gem 'sidekiq-scheduler'
+gem 'sidekiq-cron'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
