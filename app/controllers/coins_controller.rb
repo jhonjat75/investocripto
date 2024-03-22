@@ -11,17 +11,21 @@ class CoinsController < ApplicationController
 
   # GET /coins/download
   def download
+    amount = params[:amount].to_i
     coins = Coin.all
+    coin_serializer = CoinSerializer.new(coins, amount)
     respond_to do |format|
-      format.json { send_data coins.to_json, filename: "coins-#{Date.today}.json", type: 'application/json' }
-      format.csv { send_data coins_to_csv(coins), filename: "coins-#{Date.today}.csv" }
+      format.json { send_data coin_serializer.to_json, filename: "coins-#{Date.today}.json", type: 'application/json' }
+      format.csv { send_data coin_serializer.to_csv, filename: "coins-#{Date.today}.csv" }
       format.pdf do
         pdf_html = ActionController::Base.new.render_to_string(
                     template: 'coins/download.html.erb',
                     layout: 'pdf',
-                    locals: { coins: coins }
+                    locals: {
+                      coins: coins,
+                      amount: amount
+                    }
                   )
-
         pdf = WickedPdf.new.pdf_from_string(pdf_html)
         send_data pdf, filename: "coinsdata.pdf", type: 'application/pdf', disposition: 'attachment'
       end
@@ -30,12 +34,7 @@ class CoinsController < ApplicationController
 
   private
 
-  def coins_to_csv(coins)
-    CSV.generate(headers: true) do |csv|
-      csv << ['ID', 'Name', 'Price', 'Rate', 'Updated At'] # Cambiar según los atributos de Coin
-      coins.each do |coin|
-        csv << [coin.name, coin.price, coin.rate, coin.updated_at]
-      end
-    end
+  def coin_params
+    params.require(:coin).permit(:name, :rate, :logo_url, :price, :amount)
   end
 end

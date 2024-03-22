@@ -18,16 +18,26 @@
         <th></th>
         <th>Cryptocurrency</th>
         <th>Price</th>
+        <th>Annual Gain</th>
+        <th>Total</th>
+        <th>Quantity in Crypto</th>
+        <th>Amount Invested</th>
       </tr>
     </thead>
     <tbody>
       <% coins.each do |coin| %>
+        <% monthly_rate = coin.rate / 100.0 %>
+        <% annual_gain = (amount * (1 + monthly_rate)**12 - amount).round(3) %>
+        <% total = (amount + annual_gain).round(3) %>
+        <% crypto_quantity = (amount / coin.price).round(3) %>
         <tr>
-          <td>
-            <%= image_tag(coin.logo_url, width: '50px') if coin.logo_url.present? %>
-          </td>
+          <td><%= image_tag(coin.logo_url, width: '50px') if coin.logo_url.present? %></td>
           <td><%= coin.name %></td>
-          <td>$<%= '%.2f' % coin.price %></td>
+          <td><%= coin.price.round(3) %></td>
+          <td><%= annual_gain %></td>
+          <td><%= total %></td>
+          <td><%= crypto_quantity %></td>
+          <td><%= amount.round(3) %></td>
         </tr>
       <% end %>
     </tbody>
