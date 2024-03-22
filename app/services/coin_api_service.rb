@@ -12,6 +12,7 @@ class CoinApiService
 			if response.success?
 				new_price = response.parsed_response['rate']
 				coin.update(price: new_price)
+				ActionCable.server.broadcast 'coins_channel', coin.as_json
 			else
 				Rails.logger.error "Error updating price for #{coin.symbol}: #{response.parsed_response['error']}"
 			end
