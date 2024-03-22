@@ -1,80 +1,91 @@
-
-# InvestoCrypto
+# InvestoCrypto Backend
 
 ## Overview
-The InvestoCrypto is a specialized web application designed for investors interested in the cryptocurrency market. It provides a convenient way to simulate investments and forecast returns across different cryptocurrencies including Bitcoin, Ethereum, and Cardano. Built with Ruby on Rails and leveraging real-time data via CoinAPI, this tool offers an invaluable resource for strategizing investment in the crypto space.
+InvestoCrypto is a dynamic backend service that integrates with a cryptocurrency investment frontend. Built with Ruby on Rails 6, this service offers real-time investment calculations and facilitates the download of investment data in various formats. Leveraging CoinAPI, it updates and pushes the latest cryptocurrency rates to the frontend via WebSockets, ensuring timely and accurate investment simulations.
 
 ## Features
-- Real-time investment calculations for various cryptocurrencies.
-- Automated projection of potential annual returns.
-- Real-time cryptocurrency market data integration.
-- Export functionality for investment data in both CSV and JSON.
+- Automated data fetching from CoinAPI, updating every minute.
+- WebSocket implementation for real-time frontend updates.
+- Supports downloading investment data in CSV, PDF, and JSON formats.
+- Real-time investment calculation and forecasting for various cryptocurrencies.
 
 ## Technologies
 - Ruby on Rails 6+
-- JavaScript
 - MongoDB
-- CoinAPI for cryptocurrency data
+- Redis
+- Sidekiq for background jobs
+- WebSocket for real-time communication
 
 ## Getting Started
 
 ### Prerequisites
-- Ruby (version specified in `.ruby-version`)
-- Rails 6+
+- Ruby on Rails 6+
 - MongoDB
+- Redis
 - Node.js
+- Key coinAPI
 
 ### Installation
-
-To get started with the application, follow these steps:
+To set up the InvestoCrypto backend locally, follow these steps:
 
 1. Clone the repository:
-    ```bash
-    git clone https://github.com/jhonjat75/investocripto.git
-    cd investocripto
-    ```
-
+```sh
+   git clone https://github.com/jhonjat75/investocrypto.git
+   cd investocrypto
+```
 2. Install the required gems:
-    ```bash
-    bundle install
-    ```
+```sh
+bundle install
+```
 
-3. Install JavaScript dependencies:
-    ```bash
-    yarn install
-    ```
+3. Create a .env.development file and get environment variables:
+```sh
+COIN_API_KEY='change_key_coinapi'
+```
 
 4. Ensure MongoDB is running on your system.
 
 5. Initialize the database:
-    ```bash
-    rails db:setup
-    ```
+```sh
+rails db:setup
+```
 
 6. Start the Rails server:
-    ```bash
-    rails server
-    ```
+```sh
+rails server
+```
 
-7. Visit `http://localhost:3000` in your browser to use the application.
+7. Start the Sidekiq job processor to handle background jobs:
+```sh
+bundle exec sidekiq -C config/schedule.yml
+```
 
-## Usage
+### Usage
 
-To use the application, enter your investment amount in the provided fields, select the cryptocurrencies you're interested in, and submit to see the calculated projected returns.
+To use the application, enter your investment amount in the provided fields and submit to see the calculated projected returns.
 
-## API Reference
+### API Reference
 
-Cryptocurrency data is sourced in real-time from CoinAPI. Please refer to their [documentation](https://docs.coinapi.io/) for more information on data consistency and availability.
+Cryptocurrency data is sourced in real-time from CoinAPI. Please refer to their documentation for more information on data consistency and availability.
 
-## How to Contribute
+### How to Contribute
 
-Interested in contributing? We welcome pull requests and issues from all developers. Please read our `CONTRIBUTING.md` file for more details on how to contribute to this project.
+Interested in contributing? We welcome pull requests and issues from all developers. Please read our CONTRIBUTING.md file for more details on how to contribute to this project.
 
-## License
+### License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Acknowledgments
+### Acknowledgments
 
-- CoinAPI for providing cryptocurrency data.
-- The Ruby on Rails community for continuous support.
+CoinAPI for providing cryptocurrency data.
+The Ruby on Rails community for continuous support.
+Connect the backend to the frontend by ensuring the VITE_API_URL is pointing to the deployed backend service.
+
+The frontend for this application is hosted at https://github.com/jhonjat75/investocrypto_front, follow the instructions there to set it up.
+
+Remember to set up a job to pull the latest cryptocurrency data using CoinAPI and update it every minute. This involves setting up a CRON job or a scheduled task that will invoke your data fetching function.
+
+Websocket integration is vital for real-time data presentation. Ensure that as data is fetched from the backend, it is also being streamed to the frontend in real-time to display the latest information.
+
+Create a .env.development file in your backend repository with the variable COIN_API_KEY='change_key_coinapi' to integrate with CoinAPI for development.
